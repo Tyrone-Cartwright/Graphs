@@ -63,51 +63,51 @@ class Graph:
         else:
             raise IndexError("that vertex does not exist, good sir!")
 
-    def bft(self, starting_vertex_id):
-        q = Queue()
-        q.enqueue(starting_vertex_id)
-        visited = set()
-        while q.size() > 0:
-            vertex = q.dequeue()
-            if vertex not in visited:
-                visited.add(vertex)
-                for next_vert in self.vertices[vertex]:
-                    q.enqueue(next_vert)
+    # def bft(self, starting_vertex_id):
+    #     q = Queue()
+    #     q.enqueue(starting_vertex_id)
+    #     visited = set()
+    #     while q.size() > 0:
+    #         vertex = q.dequeue()
+    #         if vertex not in visited:
+    #             visited.add(vertex)
+    #             for next_vert in self.vertices[vertex]:
+    #                 q.enqueue(next_vert)
 
-    def dft(self, starting_vertex_id):
-        s = Stack()
-        s.push(starting_vertex_id)
-        visited = set()
-        while s.size() > 0:
-            vertex = s.pop()
-            if vertex not in visited:
-                print(vertex)
-                visited.add(vertex)
-                for next_vert in self.vertices[vertex]:
-                    s.push(next_vert)
+    # def dft(self, starting_vertex_id):
+    #     s = Stack()
+    #     s.push(starting_vertex_id)
+    #     visited = set()
+    #     while s.size() > 0:
+    #         vertex = s.pop()
+    #         if vertex not in visited:
+    #             print(vertex)
+    #             visited.add(vertex)
+    #             for next_vert in self.vertices[vertex]:
+    #                 s.push(next_vert)
 
-    def dft_recursive(self, vertex, visited=None):
-        if visited == None:
-            visited = set()
-        visited.add(vertex)
-        for next_vert in self.vertices[vertex]:
-            if next_vert not in visited:
-                return self.dft_recursive(next_vert, visited)
+    # def dft_recursive(self, vertex, visited=None):
+    #     if visited == None:
+    #         visited = set()
+    #     visited.add(vertex)
+    #     for next_vert in self.vertices[vertex]:
+    #         if next_vert not in visited:
+    #             return self.dft_recursive(next_vert, visited)
 
-    def bfs(self, starting_vertex, target):
-        queue = Queue()
-        visited = set()
-        queue.enqueue([starting_vertex])
-        while queue.size() > 0:
-            queue_check = queue.dequeue()
-            if queue_check[-1] not in visited:
-                visited.add(queue_check[-1])
-                if queue_check[-1] == target:
-                    return queue_check
-                for next_vert in self.vertices[queue_check[-1]]:
-                    path = queue_check[:]
-                    path.append(next_vert)
-                    queue_check.enqueue(path)
+    # def bfs(self, starting_vertex, target):
+    #     queue = Queue()
+    #     visited = set()
+    #     queue.enqueue([starting_vertex])
+    #     while queue.size() > 0:
+    #         queue_check = queue.dequeue()
+    #         if queue_check[-1] not in visited:
+    #             visited.add(queue_check[-1])
+    #             if queue_check[-1] == target:
+    #                 return queue_check
+    #             for next_vert in self.vertices[queue_check[-1]]:
+    #                 path = queue_check[:]
+    #                 path.append(next_vert)
+    #                 queue_check.enqueue(path)
 
     def dfs(self, starting_vertex, target):
         s = Stack()
