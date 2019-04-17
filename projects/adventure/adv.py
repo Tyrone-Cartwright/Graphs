@@ -26,7 +26,15 @@ player = Player("Name", world.startingRoom)
 
 
 # FILL THIS IN
-traversalPath = ['n', 's']
+# Tracks the direction 
+traversalPath = []
+# map new maze
+graph = {}
+# Tracks path that we currently walked
+# and to walk back
+path = []
+
+
 
 
 
