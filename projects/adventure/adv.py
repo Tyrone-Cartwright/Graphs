@@ -6,7 +6,7 @@ import sys
 import random
 
 
-sys.setrecursionlimit(2000)
+sys.setrecursionlimit(1500)
 # Load world
 world = World()
 
@@ -61,7 +61,7 @@ def marked(direction, id):
     if direction in player.currentRoom.getExits():
         marked(direction, player.currentRoom.id)
     elif len(player.currentRoom.getExits()) > 1 and '?' in graph[player.currentRoom.id].values():
-        otherExits(player.currentRoom.id)
+        moreExits(player.currentRoom.id)
     else:
         rev_path = path.pop()
         lastRoom(oppositeDirection(rev_path))
@@ -79,7 +79,7 @@ def updateGraph(prevID, currentID, direction):
         if key == oppositeDirection(direction):
             graph[currentID][key] = prevID   
 
-def otherExits(roomID):
+def moreExits(roomID):
     if any('?' in room.values() for room in graph.values()):
         if '?' in graph[roomID].values():
             if graph[player.currentRoom.id].get('n') == '?':
