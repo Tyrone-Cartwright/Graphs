@@ -2,8 +2,11 @@ from room import Room
 from player import Player
 from world import World
 
+import sys
 import random
 
+
+sys.setrecursionlimit(2000)
 # Load world
 world = World()
 
@@ -23,21 +26,93 @@ world.printRooms()
 player = Player("Name", world.startingRoom)
 
 
-
-
 # FILL THIS IN
-# Tracks the direction 
+
 traversalPath = []
-# map new maze
 graph = {}
-# Tracks path that we currently walked
-# and to walk back
 path = []
 
+def addToGraph(roomID, exits):
+    temp = {}
+    for i in exits:
+        temp.update({i: '?'})
+    graph[roomID] = temp
 
+addToGraph(player.currentRoom.id, player.currentRoom.getExits())
 
+def oppositeDirection(dir):
+        if dir == 'n':
+            return 's'
+        elif dir == 's':
+            return 'n'
+        elif dir == 'w':
+            return 'e'
+        else:
+            return 'w'
 
+def marked(direction, id):
+    path.append(direction)
+    prev_room_id = id
+    player.travel(direction)
+    traversalPath.append(direction)
 
+    updateGraph(prev_room_id, player.currentRoom.id, direction)
+
+    if direction in player.currentRoom.getExits():
+        marked(direction, player.currentRoom.id)
+    elif len(player.currentRoom.getExits()) > 1 and '?' in graph[player.currentRoom.id].values():
+        otherExits(player.currentRoom.id)
+    else:
+        rev_path = path.pop()
+        lastRoom(oppositeDirection(rev_path))
+
+def updateGraph(prevID, currentID, direction):
+    
+    if currentID not in graph:
+        addToGraph(currentID, player.currentRoom.getExits())
+    
+    for key, value in graph[prevID].items():
+        if key == direction:
+            graph[prevID][key] = currentID
+    
+    for key, value in graph[currentID].items():
+        if key == oppositeDirection(direction):
+            graph[currentID][key] = prevID   
+
+def otherExits(roomID):
+    if any('?' in room.values() for room in graph.values()):
+        if '?' in graph[roomID].values():
+            if graph[player.currentRoom.id].get('n') == '?':
+                marked('n', player.currentRoom.id)
+            elif graph[player.currentRoom.id].get('e') == '?':
+               marked('e', player.currentRoom.id)
+            elif graph[player.currentRoom.id].get('s') == '?':
+                marked('s', player.currentRoom.id)
+            else:
+                marked('w', player.currentRoom.id)
+        else:
+            print(f'ERROR')
+
+def lastRoom(dir):
+    if any('?' in room.values() for room in graph.values()):
+        player.travel(dir)
+        traversalPath.append(dir)
+        if '?' in graph[player.currentRoom.id].values():
+            if graph[player.currentRoom.id].get('n') == '?':
+                marked('n', player.currentRoom.id)
+            elif graph[player.currentRoom.id].get('e') == '?':
+                marked('e', player.currentRoom.id)
+            elif graph[player.currentRoom.id].get('s') == '?':
+               marked('s', player.currentRoom.id)
+            else:
+                marked('w', player.currentRoom.id)
+        else:
+            rev_path = path.pop()
+            lastRoom(oppositeDirection(rev_path))
+    else:
+        print(f'You\'ve made it')
+
+marked('n', player.currentRoom.id)
 
 
 
