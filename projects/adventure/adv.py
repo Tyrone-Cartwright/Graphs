@@ -21,8 +21,45 @@ world.printRooms()
 
 player = Player("Name", world.startingRoom)
 
+
+def opposite_direction(dir):
+    if dir == 'n':
+        return 's'
+    elif dir == 's':
+        return 'n'
+    elif dir == 'e':
+        return 'w'
+    else:
+        return 'e'
+
+
+def find_path_to_all_nodes():
+    visited = {}
+    visited[player.currentRoom.id] = player.currentRoom.getExits()
+    reversePath = []
+    room = player.currentRoom.id
+    path = []
+    while len(list(visited)) < len(roomGraph)-1:
+
+        if room not in visited:
+            visited[room] = player.currentRoom.getExits()
+            visited[room].remove(reversePath[-1])
+
+        while len(visited[room]) is 0 and len(reversePath) > 0:
+            reverse = reversePath.pop()
+            path.append(reverse)
+            player.travel(reverse)
+            room = player.currentRoom.id
+
+        move = visited[room].pop(0)
+        reversePath.append(opposite_direction(move))
+        path.append(move)
+        player.travel(move)
+        room = player.currentRoom.id
+    return path
+
 # Fill this out
-traversalPath = ['n', 's']
+traversalPath = find_path_to_all_nodes()
 
 
 
